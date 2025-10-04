@@ -1,0 +1,48 @@
+.page-container {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0d1117;
+  color: #f0f6fc;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cards container with 2 columns */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 per row */
+  gap: 5rem;
+  padding: 12rem;
+  justify-items: center; /* center the cards */
+}
+
+.card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 80%; /* reduce card width */
+  max-width: 350px; /* limit max width */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover {
+  border-color: #2563eb;
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+}
+
+
+.card h2 {
+  color: #93c5fd;
+  text-align: center;
+}
+
+
+/* Make it responsive: stack 1 column on small screens */
+@media (max-width: 768px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+}
