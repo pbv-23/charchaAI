@@ -1,10 +1,17 @@
 .page-container {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #0d1117;
+  background-color: #0d1117; 
   color: #f0f6fc;
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light theme for the home page */
+body.light-theme .page-container {
+  background-color: #f9fafb; /* light background */
+  color: #111827;
 }
 
 /* Cards container with 2 columns */
@@ -16,15 +23,22 @@
   justify-items: center; /* center the cards */
 }
 
+/* Cards */
 .card {
-  background: #161b22;
+  background: #161b22; /* dark by default */
   border: 1px solid #30363d;
   border-radius: 12px;
   padding: 2rem;
-  width: 80%; /* reduce card width */
-  max-width: 350px; /* limit max width */
-  transition: all 0.3s ease;
+  width: 80%;
+  max-width: 350px;
+  transition: all 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme .card {
+  background: #ffffff; /* light card */
+  border: 1px solid #d1d5db;
+  color: #111827;
 }
 
 .card:hover {
@@ -33,16 +47,20 @@
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
 }
 
-
 .card h2 {
-  color: #93c5fd;
+  color: #93c5fd; /* dark theme title color */
   text-align: center;
+  font-family: robo;
 }
 
+body.light-theme .card h2 {
+  color: #2563eb; /* light theme title color */
+}
 
-/* Make it responsive: stack 1 column on small screens */
+/* Responsive */
 @media (max-width: 768px) {
   .cards-container {
     grid-template-columns: 1fr;
+    padding: 6rem 2rem; /* reduce padding on small screens */
   }
 }
