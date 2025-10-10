@@ -76,9 +76,10 @@ const Navbar = () => {
           <FaScroll />
         </button>
 
-        <button className="icon-btn">
+        <Link to="/info" className="icon-btn">
           <FaInfoCircle />
-        </button>
+        </Link>
+
 
         {/* Profile Menu */}
         <div className="profile-menu-wrapper" ref={menuRef}>
