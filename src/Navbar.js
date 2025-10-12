@@ -2,17 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { FaMoon, FaSun, FaUserCircle, FaScroll, FaInfoCircle,FaClipboardList,FaBook,FaChartLine,FaCoins } from "react-icons/fa";
-import darkLogo from "./assets/logo.png";
-import lightLogo from "./assets/logo2.png";
+import logo from "./assets/download.png";
 
 const Navbar = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef(null);
 
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-    document.body.classList.toggle("light-theme");
+  const handleLogout = () => {
+    localStorage.removeItem("username");
+    window.location.href = "/login";
   };
 
   // Close profile card if clicked outside
@@ -28,16 +27,16 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      {/* Logo Section */}
+      {/* Left logo + name */}
       <div className="navbar-logo">
         <Link to="/">
           <img
-            src={darkMode ? darkLogo : lightLogo}
-            alt="CharchaAI Logo"
+            src={logo}
+            alt="AI Debate Partner Logo"
             className="logo-img"
           />
         </Link>
-        <h1>CharchaAI</h1>
+        <h1>AI Debate Partner</h1>
       </div>
 
       {/* Right side buttons */}

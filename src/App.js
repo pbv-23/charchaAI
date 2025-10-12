@@ -1,4 +1,3 @@
-// import React from "react";
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Home from "./Home";
@@ -8,6 +7,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         <Route path="/info" element={<AppInfo />} />
       </Routes>
@@ -15,4 +15,4 @@ function App() {
   );
 }
 
-export default App; // ✅ default export
+export default App;
