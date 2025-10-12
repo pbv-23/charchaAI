@@ -24,6 +24,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  position: relative;
 }
 
 /* Normal buttons */
@@ -93,23 +94,140 @@ body.light-theme .navbar-logo h1 {
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 0.6rem; /* spacing between logo and text */
+  gap: 0.6rem;
 }
 
 /* Logo image */
 .logo-img {
-  height: 60px;  /* adjust size */
-  width: 60px;   /* keep square */
+  height: 60px;
+  width: 60px;
   object-fit: contain;
-  transition: transform 0.3s ease; /* smooth zoom transition */
-  cursor: pointer; /* optional: makes it feel clickable */
+  transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 /* Zoom effect on hover */
 .logo-img:hover {
-  transform: scale(1.2); /* increase size by 20% */
+  transform: scale(1.2);
 }
 
+/* Profile card dropdown */
+.profile-card {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  width: 230px;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 999;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode card */
+.profile-card.dark {
+  background-color: #1e293b;
+  color: #f0f6fc;
+  border: 1px solid #30363d;
+}
+
+/* Light mode card */
+.profile-card.light {
+  background-color: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Avatar */
+.profile-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+/* Profile actions */
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Each profile item (link row) */
+.profile-item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  transition: all 0.25s ease;
+}
+
+/* --- Dark Mode Link Style --- */
+.profile-card.dark .profile-item {
+  background-color: #273549;
+  color: #e2e8f0;
+  border: 1px solid transparent;
+}
+
+.profile-card.dark .profile-item:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  transform: translateX(4px);
+}
+
+/* --- Light Mode Link Style --- */
+.profile-card.light .profile-item {
+  background-color: #f3f4f6;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+}
+
+.profile-card.light .profile-item:hover {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+  transform: translateX(4px);
+}
+
+/* Logout button styling */
+.logout-btn {
+  background-color: transparent;
+  border: 1px solid #dc2626;
+  color: #dc2626;
+  border-radius: 10px;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
+  color: white;
+  transform: scale(1.03);
+}
 
 /* Responsive */
 @media (max-width: 768px) {
