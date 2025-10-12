@@ -1,10 +1,20 @@
+/* Ensure full height and remove scroll */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* ✅ removes unwanted scroll */
+}
+
+/* Page container */
 .page-container {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #0d1117;
   color: #f0f6fc;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* ✅ full viewport */
+  width: 100%;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -14,12 +24,15 @@ body.light-theme .page-container {
   color: #111827;
 }
 
-/* Info page container */
+/* Info page content area */
 .info-container {
+  flex-grow: 1; /* ✅ take full height below navbar */
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 6rem 2rem;
+  align-items: center; /* ✅ center vertically */
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Info card styling */
@@ -29,17 +42,21 @@ body.light-theme .page-container {
   border-radius: 16px;
   padding: 3rem;
   max-width: 900px;
-  width: 100%;
+  width: 90%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
+  overflow-y: auto; /* ✅ if content exceeds, scroll only inside the card */
+  max-height: 80vh; /* ✅ keeps it within screen height */
 }
 
+/* Light theme for info card */
 body.light-theme .info-card {
   background: #ffffff;
   border: 1px solid #d1d5db;
   color: #111827;
 }
 
+/* Headings */
 .info-card h1 {
   text-align: center;
   color: #93c5fd;
@@ -60,6 +77,7 @@ body.light-theme .info-card h2 {
   color: #2563eb;
 }
 
+/* Lists */
 .info-card ul {
   list-style: none;
   padding: 0;
@@ -73,9 +91,10 @@ body.light-theme .info-card h2 {
 /* Responsive */
 @media (max-width: 768px) {
   .info-container {
-    padding: 4rem 1rem;
+    padding: 1.5rem;
   }
   .info-card {
-    padding: 2rem;
+    padding: 1.8rem;
+    width: 100%;
   }
 }

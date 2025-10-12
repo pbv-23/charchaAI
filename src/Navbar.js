@@ -1,54 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  FaMoon,
-  FaSun,
-  FaUserCircle,
-  FaScroll,
-  FaInfoCircle,
-  FaClipboardList,
-  FaBook,
-  FaChartLine,
-  FaCoins,
-  FaSignOutAlt,
-} from "react-icons/fa";
-import logo from "./assets/download.png";
 import "./Navbar.css";
+import { FaMoon, FaSun, FaUserCircle, FaScroll, FaInfoCircle,FaClipboardList,FaBook,FaChartLine,FaCoins } from "react-icons/fa";
+import logo from "./assets/download.png";
 
 const Navbar = () => {
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("darkMode") === "true"
-  );
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [username, setUsername] = useState("User");
-  const menuRef = useRef();
-
-  useEffect(() => {
-    const storedName = localStorage.getItem("username");
-    if (storedName) setUsername(storedName);
-
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setShowProfileMenu(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Apply dark/light mode
-  useEffect(() => {
-    document.body.classList.toggle("light-theme", !darkMode);
-    localStorage.setItem("darkMode", darkMode);
-  }, [darkMode]);
-
-  const toggleTheme = () => setDarkMode((prev) => !prev);
-  const toggleProfileMenu = () => setShowProfileMenu((prev) => !prev);
+  const [darkMode, setDarkMode] = useState(true);
+  const [showProfile, setShowProfile] = useState(false);
+  const profileRef = useRef(null);
 
   const handleLogout = () => {
     localStorage.removeItem("username");
     window.location.href = "/login";
   };
+
+  // Close profile card if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfile(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <nav className="navbar">
@@ -64,9 +39,8 @@ const Navbar = () => {
         <h1>AI Debate Partner</h1>
       </div>
 
-      {/* Right side icons */}
-      <div className="navbar-actions">
-        {/* Theme Toggle in Navbar */}
+      {/* Right side buttons */}
+      <div className="navbar-actions" ref={profileRef}>
         <button className="icon-btn" onClick={toggleTheme}>
           {darkMode ? <FaSun /> : <FaMoon />}
         </button>
@@ -75,38 +49,24 @@ const Navbar = () => {
           <FaScroll />
         </button>
 
-        <Link to="/info" className="icon-btn">
-          <FaInfoCircle />
+        <Link to="/info">
+          <button className="icon-btn">
+            <FaInfoCircle />
+          </button>
         </Link>
 
+        <button className="icon-btn" onClick={() => setShowProfile(!showProfile)}>
+          <FaUserCircle />
+        </button>
 
-        {/* Profile Menu */}
-        <div className="profile-menu-wrapper" ref={menuRef}>
-          <button className="icon-btn" onClick={toggleProfileMenu}>
-            <FaUserCircle />
-          </button>
-
-          {showProfileMenu && (
-            <div className="profile-menu">
-              <div className="profile-header">
-                <div className="profile-avatar">
-                  <FaUserCircle size={45} />
-                </div>
-                <div className="profile-name">
-                  <strong>{username}</strong>
-                  <p>Welcome back!</p>
-                </div>
-              </div>
-
-              <div className="profile-options">
-                <p className="theme-status">
-                  Current Theme:{" "}
-                  <span className="theme-name">
-                    {darkMode ? "Dark Mode" : "Light Mode"}
-                  </span>
-                </p>
-
-                <Link to="/lists" className="profile-item">
+        {/* Profile Card */}
+        {showProfile && (
+          <div className={`profile-card ${darkMode ? "dark" : "light"}`}>
+            <div className="profile-avatar">
+              <FaUserCircle size={60} />
+            </div>
+            <div className="profile-actions">
+              <Link to="/lists" className="profile-item">
                   <FaClipboardList style={{ marginRight: "8px" }} />
                   My Lists
                 </Link>
@@ -125,16 +85,10 @@ const Navbar = () => {
                   <FaCoins style={{ marginRight: "8px" }} />
                   Points
                 </Link>
-              </div>
-
-              <hr style={{ borderColor: "#333", margin: "10px 0" }} />
-
-              <button className="logout-btn" onClick={handleLogout}>
-                <FaSignOutAlt style={{ marginRight: "8px" }} /> Sign Out
-              </button>
+              <button className="logout-btn">LogIn</button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </nav>
   );

@@ -29,6 +29,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  position: relative;
 }
 
 /* Icons Style */
@@ -339,9 +340,11 @@ body.light-theme .icon-btn {
   color: #a1a1aa;
 }
 
-.theme-name {
-  color: #93c5fd;
-  font-weight: 600;
+/* Logo with image + text */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 /* Logo */
@@ -353,14 +356,132 @@ body.light-theme .icon-btn {
 }
 
 .logo-img:hover {
-  transform: scale(1.15);
+  transform: scale(1.2);
 }
 
-/* Smooth Fade Animation */
+/* Profile card dropdown */
+.profile-card {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  width: 230px;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 999;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+/* Fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode card */
+.profile-card.dark {
+  background-color: #1e293b;
+  color: #f0f6fc;
+  border: 1px solid #30363d;
+}
+
+/* Light mode card */
+.profile-card.light {
+  background-color: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Avatar */
+.profile-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+/* Profile actions */
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Each profile item (link row) */
+.profile-item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  transition: all 0.25s ease;
+}
+
+/* --- Dark Mode Link Style --- */
+.profile-card.dark .profile-item {
+  background-color: #273549;
+  color: #e2e8f0;
+  border: 1px solid transparent;
+}
+
+.profile-card.dark .profile-item:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  transform: translateX(4px);
+}
+
+/* --- Light Mode Link Style --- */
+.profile-card.light .profile-item {
+  background-color: #f3f4f6;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+}
+
+.profile-card.light .profile-item:hover {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+  transform: translateX(4px);
+}
+
+/* Logout button styling */
+.logout-btn {
+  background-color: transparent;
+  border: 1px solid #dc2626;
+  color: #dc2626;
+  border-radius: 10px;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
+  color: white;
+  transform: scale(1.03);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
   to {
     opacity: 1;

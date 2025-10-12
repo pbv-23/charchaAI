@@ -1,8 +1,6 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Home from "./Home";
-import ProfilePage from "./ProfilePage";
-import Login from "./Login";
 import AppInfo from "./AppInfo";
 
 function App() {
@@ -11,8 +9,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/info" element={<AppInfo />} /> {/* 👈 add this */}
+        <Route path="/info" element={<AppInfo />} />
       </Routes>
     </BrowserRouter>
   );
