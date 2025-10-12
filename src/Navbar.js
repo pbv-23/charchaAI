@@ -12,8 +12,7 @@ import {
   FaCoins,
   FaSignOutAlt,
 } from "react-icons/fa";
-import darkLogo from "./assets/logo.png";
-import lightLogo from "./assets/logo2.png";
+import logo from "./assets/download.png";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -57,7 +56,7 @@ const Navbar = () => {
       <div className="navbar-logo">
         <Link to="/">
           <img
-            src={darkMode ? darkLogo : lightLogo}
+            src={logo}
             alt="AI Debate Partner Logo"
             className="logo-img"
           />
