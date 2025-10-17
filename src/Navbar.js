@@ -1,20 +1,40 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import { FaMoon, FaSun, FaUserCircle, FaScroll, FaInfoCircle,FaClipboardList,FaBook,FaChartLine,FaCoins } from "react-icons/fa";
+import {
+  FaMoon,
+  FaSun,
+  FaUserCircle,
+  FaScroll,
+  FaInfoCircle,
+} from "react-icons/fa";
 import logo from "./assets/download.png";
+import ProfilePage from "./ProfilePage";
 
 const Navbar = () => {
-  const [darkMode, setDarkMode] = useState(true);
+  // ✅ Load theme from localStorage or default to dark mode
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "light" ? false : true
+  );
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef(null);
 
-  const handleLogout = () => {
-    localStorage.removeItem("username");
-    window.location.href = "/login";
-  };
+  // ✅ Apply theme class on mount and whenever darkMode changes
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.remove("light-theme");
+      document.body.classList.add("dark-theme");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark-theme");
+      document.body.classList.add("light-theme");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
-  // Close profile card if clicked outside
+  const toggleTheme = () => setDarkMode((prev) => !prev);
+
+  // ✅ Close profile when clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -27,19 +47,15 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      {/* Left logo + name */}
+      {/* Logo */}
       <div className="navbar-logo">
         <Link to="/">
-          <img
-            src={logo}
-            alt="AI Debate Partner Logo"
-            className="logo-img"
-          />
+          <img src={logo} alt="CharchaAI Logo" className="logo-img" />
         </Link>
-        <h1>AI Debate Partner</h1>
+        <h1>CharchaAI</h1>
       </div>
 
-      {/* Right side buttons */}
+      {/* Right-side Icons */}
       <div className="navbar-actions" ref={profileRef}>
         <button className="icon-btn" onClick={toggleTheme}>
           {darkMode ? <FaSun /> : <FaMoon />}
@@ -55,40 +71,15 @@ const Navbar = () => {
           </button>
         </Link>
 
-        <button className="icon-btn" onClick={() => setShowProfile(!showProfile)}>
+        <button
+          className="icon-btn"
+          onClick={() => setShowProfile(!showProfile)}
+        >
           <FaUserCircle />
         </button>
 
-        {/* Profile Card */}
-        {showProfile && (
-          <div className={`profile-card ${darkMode ? "dark" : "light"}`}>
-            <div className="profile-avatar">
-              <FaUserCircle size={60} />
-            </div>
-            <div className="profile-actions">
-              <Link to="/lists" className="profile-item">
-                  <FaClipboardList style={{ marginRight: "8px" }} />
-                  My Lists
-                </Link>
-
-                <Link to="/notebook" className="profile-item">
-                  <FaBook style={{ marginRight: "8px" }} />
-                  Notebook
-                </Link>
-
-                <Link to="/progress" className="profile-item">
-                  <FaChartLine style={{ marginRight: "8px" }} />
-                  Progress
-                </Link>
-
-                <Link to="/points" className="profile-item">
-                  <FaCoins style={{ marginRight: "8px" }} />
-                  Points
-                </Link>
-              <button className="logout-btn">LogIn</button>
-            </div>
-          </div>
-        )}
+        {/* ✅ ProfilePage always gets correct theme */}
+        {showProfile && <ProfilePage darkMode={darkMode} />}
       </div>
     </nav>
   );

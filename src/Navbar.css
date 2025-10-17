@@ -488,3 +488,35 @@ body.light-theme .icon-btn {
     transform: translateY(0);
   }
 }
+@media (max-width: 768px) {
+  .profile-card {
+    top: 60px;
+    right: 10px;
+    width: 90%;
+    max-width: 300px;
+    padding: 0.8rem;
+  }
+
+  .profile-item {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .logout-btn {
+    font-size: 0.85rem;
+    padding: 0.4rem;
+  }
+
+  .navbar-actions {
+    gap: 0.6rem;
+  }
+
+  .navbar-logo h1 {
+    font-size: 1.3rem;
+  }
+
+  .logo-img {
+    height: 45px;
+    width: 45px;
+  }
+}
