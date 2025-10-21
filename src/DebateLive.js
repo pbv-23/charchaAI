@@ -36,7 +36,7 @@ const DebateLive = () => {
       const aiReply = await fetchAIResponse(msg);
       setMessages((prev) => {
         const updated = [...prev, { sender: "AI", text: aiReply }];
-        if (updated.length === 10) {
+        if (updated.length % 10 === 0) {
           setShowEndButtons(true);
         }
         return updated;
