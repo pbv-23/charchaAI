@@ -302,9 +302,11 @@
   max-width: 60%;
   padding: 0.8rem;
   border-radius: 20px;
-  border: none;
+  border: 2px solid black; /* added black border */
   outline: none;
   font-size: 1rem;
+  background-color: white; /* optional for contrast */
+  color: black; /* optional */
 }
 
 .send-btn {
