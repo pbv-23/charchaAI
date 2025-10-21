@@ -1,15 +1,18 @@
 import React from "react";
 import Navbar from "./Navbar";
 import "./home.css";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <div className="page-container">
       <Navbar />
       <main className="cards-container">
+      <Link to="/debate1">
         <div className="card">
           <h2>1 vs AI</h2>
         </div>
+      </Link>
 
         <div className="card">
           <h2>Group</h2>

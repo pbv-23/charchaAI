@@ -1,3 +1,8 @@
+body {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
 .page-container {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #0d1117; 
@@ -6,26 +11,25 @@
   margin: 0;
   padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
-/* Light theme for the home page */
 body.light-theme .page-container {
-  background-color: #f9fafb; /* light background */
+  background-color: #f9fafb;
   color: #111827;
 }
 
-/* Cards container with 2 columns */
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 per row */
+  grid-template-columns: repeat(2, 1fr); 
   gap: 5rem;
   padding: 12rem;
-  justify-items: center; /* center the cards */
+  justify-items: center; 
 }
 
-/* Cards */
 .card {
-  background: #161b22; /* dark by default */
+  background: #161b22; 
   border: 1px solid #30363d;
   border-radius: 12px;
   padding: 2rem;
@@ -36,7 +40,7 @@ body.light-theme .page-container {
 }
 
 body.light-theme .card {
-  background: #ffffff; /* light card */
+  background: #ffffff; 
   border: 1px solid #d1d5db;
   color: #111827;
 }
@@ -48,19 +52,27 @@ body.light-theme .card {
 }
 
 .card h2 {
-  color: #93c5fd; /* dark theme title color */
+  color: #93c5fd; 
   text-align: center;
   font-family: robo;
 }
 
 body.light-theme .card h2 {
-  color: #2563eb; /* light theme title color */
+  color: #2563eb; 
 }
 
-/* Responsive */
+.cards-container a {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
 @media (max-width: 768px) {
   .cards-container {
     grid-template-columns: 1fr;
-    padding: 6rem 2rem; /* reduce padding on small screens */
+    padding: 6rem 2rem; 
   }
 }

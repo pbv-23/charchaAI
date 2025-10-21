@@ -1,0 +1,215 @@
+/* Base / Dark Theme */
+.page-container {
+  font-family: "Poppins", sans-serif;
+  color: #f0f6fc;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.debate-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+}
+
+.debate-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 2.5rem 3rem;
+  border-radius: 20px;
+  text-align: center;
+  width: 500px;
+  max-width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.debate-card h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00e6ff;
+}
+
+.topic-label {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 0.6rem;
+}
+
+.debate-topic {
+  font-size: 1.5rem;
+  color: #fff;
+  background: rgba(0, 230, 255, 0.1);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  transition: 0.3s;
+}
+
+.shuffle-btn {
+  background: linear-gradient(90deg, #00e6ff, #0072ff);
+  border: none;
+  color: white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 10px 5px;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.shuffle-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #0072ff, #00e6ff);
+}
+
+.shuffle-btn:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.start-btn {
+  background: linear-gradient(90deg, #00ff99, #00cc66);
+  border: none;
+  color: #fff;
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 204, 102, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+  margin-top: 10px;
+}
+
+.start-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #00cc66, #00ff99);
+  box-shadow: 0 8px 20px rgba(0, 204, 102, 0.6);
+}
+
+.start-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(0, 204, 102, 0.4);
+}
+
+/* Loading, error, spinner */
+.loading, .error, .info {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #ddd;
+  border-top-color: #3a8dff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .debate-card {
+    padding: 2rem 1.5rem;
+    width: 90%;
+  }
+
+  .debate-card h1 {
+    font-size: 1.7rem;
+  }
+
+  .debate-topic {
+    font-size: 1.2rem;
+    padding: 1rem;
+  }
+
+  .shuffle-btn, .start-btn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .debate-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .debate-card h1 {
+    font-size: 1.5rem;
+  }
+
+  .debate-topic {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+}
+
+/* -------------------------- */
+/* Light Theme Overrides */
+.light-theme .page-container {
+  background: #f9fafb;
+  color: #111827;
+}
+
+.light-theme .debate-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(5px);
+  border: 1px solid #d1d5db;
+  color: #111827;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .debate-card h1 {
+  color: #2563eb;
+}
+
+.light-theme .debate-topic {
+  color: #111827;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.light-theme .shuffle-btn {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  color: #fff;
+}
+
+.light-theme .shuffle-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+}
+
+.light-theme .start-btn {
+  background: linear-gradient(90deg, #10b981, #059669);
+  color: #fff;
+}
+
+.light-theme .start-btn:hover {
+  background: linear-gradient(90deg, #059669, #10b981);
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.6);
+}
