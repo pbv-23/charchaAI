@@ -1,0 +1,434 @@
+.debate-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.debate-topic-heading {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Container for cards */
+.cards-container-wrapper {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20%;
+}
+
+/* Human card */
+.human-card {
+  background-color: #72a7db;
+  border-radius: 15px;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  transition: all 0.8s ease;
+}
+
+/* Human card positions */
+/* Human card positions */
+.center-position {
+  left: 50%;
+  top: 20%; /* move down from top */
+  transform: translateX(-50%);
+}
+
+.left-position {
+  left: 20%;
+  top: 25%; /* move down slightly more when shifted */
+  transform: translateX(0);
+}
+
+/* AI card */
+.ai-card {
+  width: 200px;
+  height: 250px;
+  background-color: #da7b38;
+  border-radius: 15px;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  right: 20%;
+  top: 25%; /* move AI down to match human */
+  transition: all 0.8s ease;
+}
+
+/* Human card sizes */
+.small {
+  width: 150px;
+  height: 250px;
+  transform: translateX(-50%) scale(0.8);
+}
+
+.large {
+  width: 250px;
+  height: 300px;
+  transform: translateX(-50%) scale(1.2);
+}
+
+.normal {
+  width: 200px;
+  height: 250px;
+  transform: translateX(0) scale(1);
+}
+
+
+
+/* Card content */
+.card-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-emoji {
+  font-size: 120px;
+  margin: 20px 0;
+}
+
+.card-stance {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/* Start Button */
+.start-debate-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(90deg, #00ff99, #00cc66);
+  color: #fff;
+  box-shadow: 0 5px 15px rgba(0, 204, 102, 0.4);
+  transition: all 0.2s ease;
+}
+
+.start-debate-btn:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 204, 102, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cards-container-wrapper {
+    height: 350px;
+  }
+
+  .human-card, .ai-card {
+    width: 150px !important;
+    height: 200px !important;
+  }
+
+  .card-emoji {
+    font-size: 40px;
+  }
+
+  .card-stance {
+    font-size: 18px;
+  }
+}
+
+/* Dark Theme */
+.dark-theme .debate-page-wrapper {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-theme .debate-topic-heading {
+  color: #ffffff;
+}
+
+
+/* Human card in dark theme */
+.dark-theme .human-card {
+  background-color: #72a7db;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(199, 59, 59, 0.1);
+}
+
+/* AI card in dark theme */
+.dark-theme .ai-card {
+  background-color: #a86544;
+  color: #ffffff;
+  box-shadow: 0 4px 10px #da7b38;
+}
+
+/* Card content */
+.dark-theme .card-name {
+  color: #ffffff;
+}
+
+.dark-theme .card-emoji {
+  color: #ffcc00;
+}
+
+.dark-theme .card-stance {
+  color: #00ff99;
+}
+
+/* Start Button in dark theme */
+.dark-theme .start-debate-btn {
+  background: linear-gradient(90deg, #00cc66, #009944);
+  color: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 204, 102, 0.6);
+}
+
+.dark-theme .start-debate-btn:hover {
+  box-shadow: 0 8px 20px rgba(0, 204, 102, 0.8);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Responsive adjustments for dark theme */
+@media (max-width: 768px) {
+  .dark-theme .card-emoji {
+    font-size: 40px;
+  }
+
+  .dark-theme .card-stance {
+    font-size: 18px;
+  }
+}
+
+/* Back Button */
+.back-btn {
+  position: absolute;
+  top: 100px; /* below navbar */
+  left: 40px;
+  background: linear-gradient(90deg, #72a7db, #3b82f6);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  padding: 0.3rem 0.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.back-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+}
+
+/* Back Button - Dark Theme */
+.dark-theme .back-btn {
+  background: linear-gradient(90deg, #1e40af, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.dark-theme .back-btn:hover {
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.6);
+}
+
+/* -------------------- Chat Section -------------------- */
+.chat-box {
+  flex: 1;
+  width: 80%;
+  max-width: 800px;
+  min-height: 400px;
+  max-height: 60vh;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  padding: 1rem;
+  margin: 1rem 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  margin: 0.8rem 0;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.human-msg {
+  background-color: #72a7db;
+  color: #fff;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.ai-msg {
+  background-color: #da7b38;
+  color: #fff;
+  align-self: flex-start;
+  margin-right: auto;
+}
+
+.ai-typing {
+  font-style: italic;
+  color: #ccc;
+  margin: 0.5rem 0;
+  align-self: flex-start;
+}
+
+.input-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 80%;
+  max-width: 800px;
+  padding-bottom: 1rem;
+}
+
+.input-section input {
+  flex: 1;
+  max-width: 60%;
+  padding: 0.8rem;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+.send-btn {
+  padding: 0.7rem 1.5rem;
+  background: linear-gradient(90deg, #00ff99, #00cc66);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.send-btn:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+
+.send-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.end-buttons-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 80%;
+  max-width: 800px;
+  padding-bottom: 1rem;
+}
+
+.end-debate-btn,
+.continue-debate-btn {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.end-debate-btn {
+  background: linear-gradient(90deg, #ff6b6b, #ee5a52);
+  color: #fff;
+}
+
+.continue-debate-btn {
+  background: linear-gradient(90deg, #00ff99, #00cc66);
+  color: #fff;
+}
+
+.end-debate-btn:hover,
+.continue-debate-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Dark Theme */
+.dark-theme .debate-page-wrapper {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-theme .debate-topic-heading {
+  color: #ffffff;
+}
+
+.dark-theme .chat-box {
+  background-color: rgba(18, 18, 18, 0.7);
+}
+
+.dark-theme .human-msg {
+  background-color: #3884d3;
+}
+
+.dark-theme .ai-msg {
+  background-color: #a86544;
+}
+
+.dark-theme .end-debate-btn {
+  background: linear-gradient(90deg, #ee5a52, #c44569);
+}
+
+.dark-theme .continue-debate-btn {
+  background: linear-gradient(90deg, #00cc66, #009944);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .debate-page-wrapper {
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+
+  .chat-box {
+    width: 95%;
+    max-height: 60vh;
+    min-height: 300px;
+    margin: 0.5rem 0;
+  }
+
+  .input-section,
+  .end-buttons-section {
+    width: 95%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .input-section input {
+    max-width: none;
+  }
+
+  .send-btn,
+  .end-debate-btn,
+  .continue-debate-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .message {
+    max-width: 90%;
+  }
+}
