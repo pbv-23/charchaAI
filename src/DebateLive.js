@@ -14,6 +14,8 @@ const DebateLive = () => {
   const [turn, setTurn] = useState("Human");
   const [isTyping, setIsTyping] = useState(false);
   const [showEndButtons, setShowEndButtons] = useState(false);
+  const [debateEnded, setDebateEnded] = useState(false);
+
   const chatRef = useRef(null);
 
   useEffect(() => {
@@ -22,37 +24,42 @@ const DebateLive = () => {
     }
   }, [messages, isTyping]);
 
-  const handleSendMessage = async (msg = input) => {
-    if (!msg.trim()) return;
-    const newMsg = { sender: turn, text: msg };
-    setMessages((prev) => [...prev, newMsg]);
-    setInput("");
+  const handleSendMessage = async (msg) => {
+  // Handle both cases: triggered by Enter key or manual click
+  let messageText = "";
 
-    if (turn === "Human") {
-      setTurn("AI");
-      setIsTyping(true);
+  if (typeof msg === "string") {
+    messageText = msg;
+  } else if (typeof msg === "object" && msg?.target?.value) {
+    messageText = msg.target.value;
+  } else {
+    messageText = input;
+  }
 
-      // Call backend for AI response
-      const aiReply = await fetchAIResponse(msg);
-      setMessages((prev) => {
-        const updated = [...prev, { sender: "AI", text: aiReply }];
-        if (updated.length % 10 === 0) {
-          setShowEndButtons(true);
-        }
-        return updated;
-      });
-      setIsTyping(false);
-      setTurn("Human");
-    }
-  };
+  if (!messageText || typeof messageText !== "string" || !messageText.trim()) return;
 
-  const handleEndDebate = () => {
-    navigate("/");
-  };
+  const newMsg = { sender: turn, text: messageText.trim() };
+  setMessages((prev) => [...prev, newMsg]);
+  setInput("");
 
-  const handleContinueDebate = () => {
-    setShowEndButtons(false);
-  };
+  if (turn === "Human") {
+    setTurn("AI");
+    setIsTyping(true);
+
+    const aiReply = await fetchAIResponse(messageText);
+    setMessages((prev) => {
+      const updated = [...prev, { sender: "AI", text: aiReply }];
+      if (updated.length % 10 === 0) {
+        setShowEndButtons(true);
+      }
+      return updated;
+    });
+
+    setIsTyping(false);
+    setTurn("Human");
+  }
+};
+
 
   const fetchAIResponse = async (humanMsg) => {
     try {
@@ -62,7 +69,6 @@ const DebateLive = () => {
         body: JSON.stringify({ topic, humanMsg, aiStance }),
       });
       const data = await res.json();
-      // Show warning if using fallback
       if (data.warning) console.warn(data.warning);
       return data.reply || "Hmm, that’s an interesting argument.";
     } catch (err) {
@@ -71,11 +77,29 @@ const DebateLive = () => {
     }
   };
 
+  const handleEndDebate = () => {
+    // Add AI closing line
+    setMessages((prev) => [
+      ...prev,
+      { sender: "AI", text: "The debate has ended. Let's view the results!" },
+    ]);
+
+    // Mark debate as ended
+    setDebateEnded(true);
+    setShowEndButtons(false);
+  };
+
+  const handleContinueDebate = () => {
+    setShowEndButtons(false);
+  };
+
   return (
     <div className="page-container">
       <div className="debate-page-wrapper">
         <h2 className="debate-topic-heading">Topic: {topic}</h2>
-        <h4>Human: {humanStance} | AI: {aiStance}</h4>
+        <h4>
+          Human: {humanStance} | AI: {aiStance}
+        </h4>
 
         <div className="chat-box" ref={chatRef}>
           {messages.map((msg, index) => (
@@ -89,50 +113,67 @@ const DebateLive = () => {
           {isTyping && <div className="ai-typing">🤖 AI is typing...</div>}
         </div>
 
-        {showEndButtons ? (
-          <div className="end-buttons-section">
-            <button
-              className="end-debate-btn"
-              onClick={handleEndDebate}
-            >
-              End Debate
-            </button>
-            <button
-              className="continue-debate-btn"
-              onClick={handleContinueDebate}
-            >
-              Continue Debate
-            </button>
-          </div>
-        ) : (
-          <div className="input-section">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              disabled={turn !== "Human" || isTyping}
-              placeholder={
-                turn === "Human"
-                  ? `Type your argument...`
-                  : "Wait for AI to respond..."
-              }
-            />
-            <button
-              className="send-btn"
-              onClick={() => handleSendMessage()}
-              disabled={turn !== "Human" || isTyping}
-            >
-              Send
-            </button>
-            <button
-              className="end-debate-btn"
-              onClick={handleEndDebate}
-            >
-              End Debate
-            </button>
-          </div>
-        )}
+        {/* Main logic section */}
+        <div className="input-section">
+          {!debateEnded ? (
+            <>
+              {/* Show send + end debate normally */}
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                disabled={turn !== "Human" || isTyping}
+                placeholder={
+                  turn === "Human"
+                    ? "Type your argument..."
+                    : "Wait for AI to respond..."
+                }
+              />
+              <button
+                className="send-btn"
+                onClick={handleSendMessage}
+                disabled={turn !== "Human" || isTyping}
+              >
+                Send
+              </button>
+
+              {/* Show end buttons if debate reached threshold */}
+              {showEndButtons && (
+                <div className="end-buttons-section">
+                  <button className="end-debate-btn" onClick={handleEndDebate}>
+                    End Debate
+                  </button>
+                  <button
+                    className="continue-debate-btn"
+                    onClick={handleContinueDebate}
+                  >
+                    Continue Debate
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {/* After debate ends, only show this */}
+              <button
+                className="score-btn"
+                onClick={() =>
+                  navigate("/score", {
+                    state: { topic, messages, humanStance, aiStance },
+                  })
+                }
+              >
+                View Score
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

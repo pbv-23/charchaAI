@@ -265,6 +265,188 @@ app.get("/check-models", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch models" });
   }
 });
+// ✅ New: AI Judges and Declares Winner
+app.post("/judge", async (req, res) => {
+  try {
+    const { topic, messages, humanStance, aiStance } = req.body;
+
+    if (!messages || messages.length === 0) {
+      return res.status(400).json({ error: "No debate messages to judge." });
+    }
+
+    const debateSummary = messages
+      .map((m) => `${m.sender}: ${m.text}`)
+      .join("\n");
+
+const prompt = `
+You are an impartial debate judge.
+
+Topic: "${topic}"
+Human stance: ${humanStance}
+AI stance: ${aiStance}
+
+Debate transcript:
+${transcript}
+
+Evaluate the debate and respond **only in strict JSON** with this exact format:
+{
+  "humanScore": number (0-10),
+  "aiScore": number (0-10),
+  "winner": "Human" or "AI",
+  "reason": "Brief explanation"
+}
+
+Do NOT include any extra text outside of JSON.
+`;
+
+
+    let reply;
+    if (!OPENROUTER_API_KEY) {
+      // Simple fallback if no API key
+      const randomWinner = Math.random() < 0.5 ? "Human" : "AI";
+      return res.json({
+        winner: randomWinner,
+        reason: "Fallback judgment based on equal arguments.",
+        warning: "No API key - random fallback",
+      });
+    }
+
+    const orResponse = await fetch(OPENROUTER_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: OPENROUTER_MODEL,
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 300,
+        temperature: 0.7,
+      }),
+    });
+
+    const data = await orResponse.json();
+    const raw = data.choices?.[0]?.message?.content || "";
+
+    // Extract JSON safely
+    const match = raw.match(/\{[\s\S]*\}/);
+    let parsed;
+    if (match) {
+      parsed = JSON.parse(match[0]);
+    } else {
+      parsed = { winner: "AI", reason: "Couldn't parse response properly." };
+    }
+
+    res.json(parsed);
+  } catch (err) {
+    console.error("Judging error:", err);
+    res.status(500).json({
+      winner: "Error",
+      reason: "Server error during judging.",
+    });
+  }
+});
+app.post("/analyze-score", async (req, res) => {
+  const { topic, messages, humanStance, aiStance } = req.body;
+  const response = await fetch("http://localhost:5000/judge", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ topic, messages, humanStance, aiStance }),
+  });
+  const data = await response.json();
+  res.json(data);
+});
+app.post("/judge", async (req, res) => {
+  try {
+    const { topic, messages, humanStance, aiStance } = req.body;
+
+    if (!messages || messages.length === 0) {
+      return res.status(400).json({ error: "No debate messages to judge." });
+    }
+
+    const transcript = messages.map(m => `${m.sender}: ${m.text}`).join("\n");
+
+    const prompt = `
+You are an impartial debate judge.
+
+Topic: "${topic}"
+Human stance: ${humanStance}
+AI stance: ${aiStance}
+
+Debate transcript:
+${transcript}
+
+Evaluate the debate and respond **only** in valid JSON like:
+{
+  "humanScore": number (0–10),
+  "aiScore": number (0–10),
+  "winner": "Human" or "AI",
+  "reason": "Brief reason"
+}
+`;
+
+    // 🧩 If no OpenRouter API key, return random fallback
+    if (!process.env.OPENROUTER_API_KEY) {
+      const humanScore = Number((Math.random() * 4 + 6).toFixed(1));
+      const aiScore = Number((Math.random() * 4 + 6).toFixed(1));
+      const winner = aiScore > humanScore ? "AI" : "Human";
+      return res.json({
+        humanScore,
+        aiScore,
+        winner,
+        reason: "Fallback random scoring (no API key)."
+      });
+    }
+
+    // ✅ Send to OpenRouter or other AI model
+    const response = await fetch(process.env.OPENROUTER_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: process.env.OPENROUTER_MODEL,
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 400,
+        temperature: 0.6,
+      }),
+    });
+
+    const data = await response.json();
+    const raw = data.choices?.[0]?.message?.content || "";
+    console.log("Raw judge response:", raw);
+
+    // 🧠 Extract JSON safely
+    const match = raw.match(/\{[\s\S]*\}/);
+    let result = {};
+    if (match) {
+      try {
+        result = JSON.parse(match[0]);
+      } catch {
+        result = {};
+      }
+    }
+
+    // 🛠️ Guarantee numeric scores
+    result.humanScore = Number(result.humanScore ?? (Math.random() * 3 + 6).toFixed(1));
+    result.aiScore = Number(result.aiScore ?? (Math.random() * 3 + 6).toFixed(1));
+    result.winner = result.winner ?? (result.aiScore > result.humanScore ? "AI" : "Human");
+    result.reason = result.reason ?? "Could not parse model response fully.";
+
+    console.log("Final judged result:", result);
+    res.json(result);
+
+  } catch (err) {
+    console.error("Judging error:", err);
+    res.status(500).json({
+      humanScore: 0,
+      aiScore: 0,
+      winner: "Error",
+      reason: "Server error during judging."
+    });
+  }
+});
 
 // Serve static JSON
 app.use("/static", express.static(__dirname));

@@ -6,6 +6,7 @@ import Login from "./Login";
 import Debate from "./Debate";
 import DebateStart from "./DebateStart";
 import DebateLive from "./DebateLive";
+import ScorePage from "./ScorePage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/debate1" element={<Debate />} />
         <Route path="/debatestart" element={<DebateStart />} />
         <Route path="/debatelive" element={<DebateLive />} />
+        <Route path="/score" element={<ScorePage />} />
       </Routes>
     </BrowserRouter>
   );

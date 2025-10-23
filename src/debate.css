@@ -100,6 +100,21 @@
   transform: scale(0.98);
   box-shadow: 0 4px 12px rgba(0, 204, 102, 0.4);
 }
+.score-btn {
+  padding: 0.7rem 1.5rem;
+  background: linear-gradient(90deg, #72a7db, #3b82f6);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.score-btn:hover {
+  transform: scale(1.05);
+}
 
 /* Loading, error, spinner */
 .loading, .error, .info {

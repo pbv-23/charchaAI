@@ -367,6 +367,21 @@
 .continue-debate-btn:hover {
   transform: scale(1.05);
 }
+.score-btn {
+  padding: 0.8rem 2rem;
+  background: linear-gradient(90deg, #4ade80, #22c55e);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.score-btn:hover {
+  transform: scale(1.05);
+}
 
 /* Dark Theme */
 .dark-theme .debate-page-wrapper {

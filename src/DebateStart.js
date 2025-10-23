@@ -15,6 +15,7 @@ const DebateStart = () => {
   const [humanStance, setHumanStance] = useState("");
   const [aiStance, setAiStance] = useState("");
   const [showStartButton, setShowStartButton] = useState(false);
+ 
 
   useEffect(() => {
     const stance = Math.random() < 0.5 ? "Support" : "Oppose";
