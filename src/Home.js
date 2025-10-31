@@ -17,14 +17,6 @@ const Home = () => {
         <div className="card">
           <h2>Group</h2>
         </div>
-
-        <div className="card">
-          <h2>History</h2>
-        </div>
-
-        <div className="card">
-          <h2>Profile</h2>
-        </div>
       </main>
     </div>
   );

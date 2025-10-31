@@ -15,9 +15,12 @@ const DebateStart = () => {
   const [humanStance, setHumanStance] = useState("");
   const [aiStance, setAiStance] = useState("");
   const [showStartButton, setShowStartButton] = useState(false);
- 
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
+    const storedUsername = localStorage.getItem("username") || "Human";
+    setUsername(storedUsername);
+
     const stance = Math.random() < 0.5 ? "Support" : "Oppose";
     setHumanStance(stance);
     setAiStance(stance === "Support" ? "Oppose" : "Support");
@@ -51,7 +54,7 @@ const DebateStart = () => {
         <div className="cards-container-wrapper">
           {showHuman && (
             <div className={`human-card ${humanPosition} ${humanSize}`}>
-              <div className="card-name">Human</div>
+              <div className="card-name">{username}</div>
               <div className="card-emoji">🧑</div>
               <div className="card-stance">{humanStance}</div>
             </div>

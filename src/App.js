@@ -7,7 +7,8 @@ import Debate from "./Debate";
 import DebateStart from "./DebateStart";
 import DebateLive from "./DebateLive";
 import ScorePage from "./ScorePage";
-
+import Signup from "./Signup";
+import HistoryPage from "./HistoryPage";
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,8 @@ function App() {
         <Route path="/debatestart" element={<DebateStart />} />
         <Route path="/debatelive" element={<DebateLive />} />
         <Route path="/score" element={<ScorePage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/history" element={<HistoryPage />} />
       </Routes>
     </BrowserRouter>
   );
