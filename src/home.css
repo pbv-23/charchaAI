@@ -19,8 +19,8 @@ body.light-theme .page-container {
 .cards-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
-  gap: 5rem;
-  padding: 12rem;
+  gap: 10rem;
+  padding: 15rem;
   justify-items: center; 
 }
 
@@ -29,7 +29,8 @@ body.light-theme .page-container {
   border: 1px solid #30363d;
   border-radius: 12px;
   padding: 2rem;
-  width: 80%;
+  width: 550px;
+  height: 120px;
   max-width: 350px;
   transition: all 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -51,6 +52,7 @@ body.light-theme .card {
   color: #93c5fd; 
   text-align: center;
   font-family: robo;
+  font-size: 40px;
 }
 
 body.light-theme .card h2 {

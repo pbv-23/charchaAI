@@ -7,6 +7,10 @@ import pRetry from "p-retry";
 import cors from "cors";
 import { fileURLToPath } from "url"; // For __dirname in ESM
 import dotenv from "dotenv"; // For .env support
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import User from "./models/User.js";
+import Debate from "./models/Debate.js";
 
 // Load .env vars
 dotenv.config();
@@ -32,6 +36,11 @@ app.use(cors({ origin: "*" }));
 
 // ✅ Add this: Parse JSON bodies (missing middleware causing req.body undefined)
 app.use(express.json());
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error(err));
 
 // Helper: fetch page with retry
 async function fetchPage(url) {
@@ -341,23 +350,22 @@ Evaluate the debate and respond **only in valid JSON** like:
 
     // Extract JSON safely
     const match = raw.match(/\{[\s\S]*\}/);
-    let result = {};
-    if (match) {
-      try {
-        result = JSON.parse(match[0]);
-      } catch {
-        result = {};
-      }
-    }
+let result = {};
+if (match) {
+  try {
+    result = JSON.parse(match[0]);
+  } catch {
+    result = {};
+  }
+}
 
-    // Ensure numeric scores
-    result.humanScore = Number(result.humanScore ?? (Math.random() * 3 + 6).toFixed(1));
-    result.aiScore = Number(result.aiScore ?? (Math.random() * 3 + 6).toFixed(1));
-    result.winner = result.winner ?? (result.aiScore > result.humanScore ? "AI" : "Human");
-    result.reason = result.reason ?? "Could not parse model response fully.";
+result.humanScore = Number(result.humanScore ?? (Math.random() * 3 + 6).toFixed(1));
+result.aiScore = Number(result.aiScore ?? (Math.random() * 3 + 6).toFixed(1));
+result.winner = result.winner ?? (result.aiScore > result.humanScore ? "AI" : "Human");
+result.reason = result.reason ?? "Could not parse model response fully.";
 
-    console.log("Final judged result:", result);
-    res.json(result);
+res.json(result);
+
 
   } catch (err) {
     console.error("Judging error:", err);
@@ -369,6 +377,107 @@ Evaluate the debate and respond **only in valid JSON** like:
     });
   }
 });
+app.post("/signup", async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: "User already exists" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword });
+    await newUser.save();
+
+    res.status(201).json({ message: "Signup successful" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Login Route
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+
+    res.status(200).json({ message: "Login successful", username: user.username });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ Save debate after it ends
+// ✅ Ensures latest result replaces old one for same user + topic
+// ✅ Save or update debate in MongoDB
+app.post("/saveDebate", async (req, res) => {
+  try {
+    const { email, topic, humanStance, aiStance, messages, judgedResult } = req.body;
+
+    if (!email || !topic || !judgedResult) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    await Debate.findOneAndUpdate(
+      { email, topic },
+      {
+        $set: {
+          email,
+          topic,
+          humanStance,
+          aiStance,
+          messages,
+          humanScore: judgedResult.humanScore,
+          aiScore: judgedResult.aiScore,
+          winner: judgedResult.winner,
+          reason: judgedResult.reason,
+          date: new Date(),
+        },
+      },
+      { upsert: true, new: true }
+    );
+
+    res.json({ success: true, message: "✅ Debate saved/updated successfully" });
+  } catch (err) {
+    console.error("❌ Error saving debate:", err);
+    res.status(500).json({ error: "Failed to save debate" });
+  }
+});
+
+
+
+
+// ✅ Get all debates for a user
+app.get("/getDebates/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const debates = await Debate.find({ email }).sort({ date: -1 });
+
+    res.json(
+      debates.map((d) => ({
+        topic: d.topic,
+        date: d.date,
+        judgedResult: {
+          humanScore: d.humanScore ?? "N/A",
+          aiScore: d.aiScore ?? "N/A",
+          winner: d.winner ?? "N/A",
+          reason: d.reason ?? "N/A",
+        },
+        messages: d.messages,
+        humanStance: d.humanStance,
+        aiStance: d.aiStance,
+      }))
+    );
+  } catch (err) {
+    console.error("Error fetching debates:", err);
+    res.status(500).json({ error: "Failed to fetch debate history." });
+  }
+});
+
+
 
 app.use("/static", express.static(__dirname));
 
